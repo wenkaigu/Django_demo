@@ -1,0 +1,225 @@
+{% extends 'basesite.html' %}
+
+<!-- Header -->
+{% block title %} Offer | Home {% endblock %}
+<!-- Header End-->
+
+<!-- Main Page-->
+{% block breadcrumb %}
+<ol class="breadcrumb visible-sm visible-md visible-lg">
+	<li><a href="/"><i class="icon fa fa-home"></i>Home</a></li>
+    <li><a href="/offer"><i class="icon fa fa-file-text-o"></i>Offer</a></li>
+	<li class="active"><i class="fa fa-edit"></i>Offer Details</li>
+</ol>
+{% endblock%}
+
+{% block pull-right %}
+<h2>Offer Details</h2>
+{% endblock%}
+
+{% block main_content %}
+<form id="form" class="form-horizontal" action="/offer/{{ candidate.id }}" method="post">
+    {% csrf_token %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h6><i class="fa  fa-check-circle-o bk-fg-warning"></i>Offer Details</h6>
+            <div class="panel-actions">
+                <a href="#" class="btn-minimize"><i class="fa fa-caret-up"></i></a>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div>
+                <label class="col-sm-3 control-label">Status</label>
+                <div class="col-sm-9">
+                    {% if candidate.offer_generated and candidate.offer_signed %}
+                        <span class="label label-success">Signed</span>
+                    {% elif candidate.offer_generated %}
+                        <span class="label label-info">Generated</span>
+                    {% else %}
+                        <span class="label label-default">Drafted</span>
+                    {% endif %}
+                </div>
+            </div>
+            <hr />
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Candidate Name <span class="required">*</span></label>
+                <div class="col-sm-9">
+                    {% if candidate.offer_generated or request.session.current_role != 'Recruiter' %}
+                        <p class="form-control-static">{{candidate.name}}</p>
+                    {% else %}
+                        <input type="text" name="name" class="form-control" value="{{candidate.name}}" required/>
+                    {% endif %}
+                </div>
+                <label class="col-sm-3 control-label">Email <span class="required">*</span></label>
+                <div class="col-sm-9">
+                    {% if candidate.offer_generated or request.session.current_role != 'Recruiter' %}
+                        <p class="form-control-static">{{candidate.email}}</p>
+                    {% else %}
+                        <input type="email" name="email" class="form-control" value="{{candidate.email}}" required/>
+                    {% endif %}
+                </div>
+                <label class="col-sm-3 control-label">Mobile <span class="required">*</span></label>
+                <div class="col-sm-9">
+                    {% if candidate.offer_generated or request.session.current_role != 'Recruiter' %}
+                        <p class="form-control-static">{{candidate.mobile}}</p>
+                    {% else %}
+                        <input name="mobile" data-plugin-masked-input data-input-mask="999 9999 9999" value="{{candidate.mobile}}" class="form-control" required/>
+                    {% endif %}
+                </div>
+            </div>
+            <hr />
+            <div class="form-group">
+                <label class="col-md-3 control-label">Grade <span class="required">*</span></label>
+                <div class="col-md-9">
+                    {% if candidate.offer_generated or request.session.current_role != 'Recruiter' %}
+                        <p class="form-control-static">{{candidate.grade}}</p>
+                    {% else %}
+                        <select name="grade" class="form-control select2" size="1" required>
+                            <option></option>
+                            <optgroup label="ITO">
+                                <option value="Y" {% if candidate.grade == 'Y' %} selected {% endif %} >Y</option>
+                                <option value="C1Y" {% if candidate.grade == 'C1Y' %} selected {% endif %} >C1Y</option>
+                                <option value="C1" {% if candidate.grade == 'C1' %} selected {% endif %} >C1</option>
+                                <option value="C2" {% if candidate.grade == 'C2' %} selected {% endif %} >C2</option>
+                                <option value="C3A" {% if candidate.grade == 'C3A' %} selected {% endif %} >C3A</option>
+                                <option value="C3B" {% if candidate.grade == 'C3B' %} selected {% endif %} >C3B</option>
+                                <option value="C4" {% if candidate.grade == 'C4' %} selected {% endif %} >C4</option>
+                                <option value="C5" {% if candidate.grade == 'C5' %} selected {% endif %} >C5</option>
+                            </optgroup>
+                            <optgroup label="BPO">
+                                <option value="BPO1" {% if candidate.grade == 'BPO1' %} selected {% endif %} >BPO1</option>
+                                <option value="BPO2" {% if candidate.grade == 'BPO2' %} selected {% endif %} >BPO2</option>
+                                <option value="BPO3" {% if candidate.grade == 'BPO3' %} selected {% endif %} >BPO3</option>
+                                <option value="BPO4" {% if candidate.grade == 'BPO4' %} selected {% endif %} >BPO4</option>
+                                <option value="BPO5" {% if candidate.grade == 'BPO5' %} selected {% endif %} >BPO5</option>
+                                <option value="BPO6" {% if candidate.grade == 'BPO6' %} selected {% endif %} >BPO6</option>
+                                <option value="BPO7" {% if candidate.grade == 'BPO7' %} selected {% endif %} >BPO7</option>
+                                <option value="BPO8" {% if candidate.grade == 'BPO8' %} selected {% endif %} >BPO8</option>
+                            </optgroup>
+                        </select>
+                    {% endif %}
+                </div>
+            </div>
+            <hr />
+            <div class="form-group">
+                <label class="col-md-3 control-label">Location <span class="required">*</span></label>
+                <div class="col-md-9">
+                    {% if candidate.offer_generated or request.session.current_role != 'Recruiter' %}
+                        {% if candidate.location == 'SH' %}
+                            <p class="form-control-static">Shanghai</p>
+                        {% elif candidate.location == 'BJ' %}
+                            <p class="form-control-static">Beijing</p>
+                        {% elif candidate.location == 'DL' %}
+                            <p class="form-control-static">Dalian</p>
+                        {% elif candidate.location == 'TJ' %}
+                            <p class="form-control-static">Tianjing</p>
+                        {% elif candidate.location == 'HZ' %}
+                            <p class="form-control-static">Hangzhou</p>
+                        {% elif candidate.location == 'SZ' %}
+                            <p class="form-control-static">Shenzhen</p>
+                        {% endif %}
+                    {% else %}
+                        <select name="location" class="form-control select2" size="1" required>
+                            <option></option>
+                            <option value="SH" {% if candidate.location == 'SH' %} selected {% endif %} >Shanghai</option>
+                            <option value="BJ" {% if candidate.location == 'BJ' %} selected {% endif %} >Beijing</option>
+                            <option value="TJ" {% if candidate.location == 'TJ' %} selected {% endif %} >Tianjing</option>
+                            <option value="DL" {% if candidate.location == 'DL' %} selected {% endif %} >Dalian</option>
+                            <option value="HZ" {% if candidate.location == 'HZ' %} selected {% endif %} >Hangzhou</option>
+                            <option value="SZ" {% if candidate.location == 'SZ' %} selected {% endif %} >Shenzhen</option>
+                        </select>
+                    {% endif %}
+                </div>
+                <label class="col-sm-3 control-label">Other Location</label>
+                <div class="col-sm-9">
+                    {% if candidate.offer_generated or request.session.current_role != 'Recruiter' %}
+                        <p class="form-control-static">{{candidate.other_location}}</p>
+                    {% else %}
+                        <input type="text" name="addiLoc" class="form-control" value="{{candidate.other_location}}" />
+                    {% endif %}
+                </div>
+            </div>
+            <hr />
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Account <span class="required">*</span></label>
+                <div class="col-sm-9">
+                    {% if candidate.offer_generated or request.session.current_role != 'Recruiter' %}
+                        <p class="form-control-static">{{candidate.account}}</p>
+                    {% else %}
+                        <input type="text" name="account" class="form-control" value="{{candidate.account}}" required/>
+                    {% endif %}
+                </div>
+            </div>
+            <hr />
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Probation <span class="required">*</span></label>
+                <div class="col-md-9">
+                    {% if candidate.offer_generated or request.session.current_role != 'Recruiter' %}
+                        {% if candidate.probation == '0' %}
+                            <p class="form-control-static">No Probation</p>
+                        {% elif candidate.probation == '3'%}
+                            <p class="form-control-static">3 Month Probation</p>
+                        {% elif candidate.probation == '6'%}
+                            <p class="form-control-static">6 Month Probation</p>
+                        {% endif %}
+                    {% else %}
+                        <select name="probation" class="form-control select2" size="1" required>
+                            <option></option>
+                            <option value="0" {% if candidate.probation == '0' %} selected {% endif %} >No Probation</option>
+                            <option value="3" {% if candidate.probation == '3' %} selected {% endif %} >3 Month Probation</option>
+                            <option value="6" {% if candidate.probation == '6' %} selected {% endif %} >6 Month Probation</option>
+                        </select>
+                    {% endif %}
+                </div>
+                <label class="col-sm-3 control-label">Base Salary <span class="required">*</span></label>
+                <div class="col-sm-9">
+                    {% if candidate.offer_generated or request.session.current_role != 'Recruiter' %}
+                        <p class="form-control-static">¥ {{candidate.salary}}.00</p>
+                    {% else %}
+                    <div class="controls">
+                        <div class="input-prepend input-group has-warning">
+                            <span class="input-group-addon ">¥</span>
+                            <input name="salary" class="form-control" size="16" type="number" value="{{candidate.salary}}" required/><span class="input-group-addon">.00</span>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                <label class="col-sm-3 control-label">Variable Salary <span class="required">*</span></label>
+                <div class="col-sm-9">
+                    {% if candidate.offer_generated or request.session.current_role != 'Recruiter' %}
+                        <p class="form-control-static">¥ {{candidate.var_pay}}.00</p>
+                    {% else %}
+                        <div class="controls">
+                            <div class="input-prepend input-group has-warning">
+                                <span class="input-group-addon ">¥</span>
+                                <input name="var_pay" class="form-control" size="16" type="number" value="{{candidate.var_pay}}" required/><span class="input-group-addon">.00</span>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-7 col-sm-offset-5">
+                    <button class="bk-margin-5 btn btn-info">{% if candidate.offer_generated or request.session.current_role != 'Recruiter' %}Back{% else %}Save{% endif %}</button>
+                    {% if not candidate.offer_generated and request.session.current_role == 'Recruiter' %}
+                        <button type="reset" class="bk-margin-5 btn btn-default">Reset</button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock%}
+
+{% block notification %}
+    <div id="msg_level" hidden="hidden" >{{ msg_level }} </div>
+    <div id="msg_content" hidden="hidden">{{ msg_content }} </div>
+{% endblock%}
+<!-- Main Page-->
+
+<!-- Page JS -->
+{% block page_js %}
+<script src="../assets/js/pages/offer-details.js"></script>
+{% endblock %}
+<!-- Page JS -->

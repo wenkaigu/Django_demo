@@ -1,0 +1,479 @@
+{% extends 'basesite.html' %}
+
+<!-- Header -->
+{% block title %} Profile | Home {% endblock %}
+<!-- Header End-->
+
+<!-- Main Page-->
+{% block breadcrumb %}
+<ol class="breadcrumb visible-sm visible-md visible-lg">
+	<li><a href="/"><i class="icon fa fa-home"></i>Home</a></li>
+	<li class="active"><i class="fa fa-user"></i>Profile</li>
+</ol>
+{% endblock%}
+
+{% block pull-right %}
+<h2>Profile</h2>
+{% endblock%}
+
+{% block main_content %}
+<div class="row profile">
+	<div class="col-lg-7 col-md-7 col-sm-7">
+		<div class="panel">
+			<div class="panel-body">
+				<div class="text-left bk-bg-white bk-padding-top-40 bk-padding-bottom-10">
+					<div class="row">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bk-vcenter text-center">
+							<div class="bk-avatar">
+								<img src="../assets/img/avatar.jpg" alt="" class="img-circle bk-img-120 bk-border-light-gray bk-border-3x" />
+							</div>
+                            <h4 class="bk-margin-top-10 bk-docs-font-weight-300">{{ request.user.username }}</h4>
+							<h4 class="bk-margin-top-10 bk-docs-font-weight-300">{{ request.user.first_name }} {{ request.user.last_name }}</h4>
+						</div>
+						<hr class="bk-margin-off" />
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+							<!--<a class="col-xs-4 bk-bg-white bk-fg-primary bk-padding-top-20 bk-padding-bottom-20 text-center">-->
+								<!--<i class="fa fa-facebook"></i>-->
+							<!--</a>-->
+							<!--<a class="col-xs-4 bk-bg-white bk-fg-success bk-padding-top-20 bk-padding-bottom-20 text-center">-->
+								<!--<i class="fa fa-twitter"></i>-->
+							<!--</a>-->
+							<!--<a class="col-xs-4 bk-bg-white bk-fg-danger bk-padding-top-20 bk-padding-bottom-20 text-center">-->
+								<!--<i class="fa fa-google-plus"></i>-->
+							<!--</a>-->
+						</div>
+						<!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-left bk-vcenter text-center">-->
+							<!--<hr class="bk-margin-off" />-->
+							<!--<small>HTML: 60%</small>-->
+							<!--<div class="progress bk-margin-bottom-10" style="height: 8px;">-->
+								<!--<div class="progress thin progress-striped active">-->
+									<!--<div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">-->
+										<!--<span class="sr-only">60% Complete</span>-->
+									<!--</div>-->
+								<!--</div>-->
+							<!--</div>-->
+							<!--<small>CSS: 88%</small>-->
+							<!--<div class="progress bk-margin-bottom-10" style="height: 8px;">-->
+								<!--<div class="progress thin progress-striped active">-->
+									<!--<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="88" aria-valuemin="0" aria-valuemax="100" style="width: 88%;">-->
+										<!--<span class="sr-only">88% Complete</span>-->
+									<!--</div>-->
+								<!--</div>-->
+							<!--</div>-->
+							<!--<small>JS: 35%</small>-->
+							<!--<div class="progress bk-margin-off-bottom" style="height: 8px;">-->
+								<!--<div class="progress thin progress-striped active">-->
+									<!--<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100" style="width: 35%;">-->
+										<!--<span class="sr-only">35% Complete</span>-->
+									<!--</div>-->
+								<!--</div>-->
+							<!--</div>-->
+						<!--</div>-->
+					</div>
+				</div>
+				<hr class="bk-margin-off" />
+				<div class="bk-ltr bk-bg-white">
+					<div class="row">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+							<div class="bk-widget bk-border-off bk-webkit-fix">
+								<div class="bk-bg-white text-center bk-padding-top-20 bk-padding-bottom-10">
+									<div class="row">
+										<div class="text-left bk-padding-left-10">
+											<h4 class="bk-margin-off">General Information</h4>
+										</div>
+									</div>
+								</div>
+								<div class="bs-example">
+									<div id="carousel-example-generic3" class="carousel bk-carousel-fade slide" data-ride="carousel">
+										<div class="carousel-inner">
+											<div class="item active">
+												<a class="panel-body bk-bg-white bk-bg-lighten bk-padding-off-top bk-padding-off-bottom">
+													<div class="pull-left bk-margin-top-10 bk-margin-right-10">
+														<div class="bk-round bk-bg-darken bk-border-off bk-icon bk-icon-default bk-bg-primary">
+															<i class="fa fa-user"></i>
+														</div>
+													</div>
+													<h5 class="bk-fg-primary bk-fg-darken bk-margin-off-bottom">Current Role</h5>
+													<p>
+														<small>{{ request.session.current_role}}</small>
+													</p>
+												</a>
+											</div>
+                                            {% for i in roles %}
+                                                {% if request.session.current_role != i.role %}
+                                                    <div class="item">
+                                                        <a class="panel-body bk-bg-white bk-bg-lighten bk-padding-off-top bk-padding-off-bottom">
+                                                            <div class="pull-left bk-margin-top-10 bk-margin-right-10">
+                                                                <div class="bk-round bk-bg-darken bk-border-off bk-icon bk-icon-default bk-bg-info">
+                                                                    <i class="fa fa-user"></i>
+                                                                </div>
+                                                            </div>
+                                                            <h5 class="bk-fg-info bk-fg-darken bk-margin-off-bottom">Other Roles</h5>
+                                                            <p>
+                                                                <small> {{ i.role }}</small>
+                                                            </p>
+                                                        </a>
+                                                    </div>
+                                                {% endif %}
+                                            {% endfor %}
+											<!--<div class="item active">-->
+												<!--<a class="panel-body bk-bg-white bk-bg-lighten bk-padding-off-top bk-padding-off-bottom">-->
+													<!--<div class="pull-left bk-margin-top-10 bk-margin-right-10">-->
+														<!--<div class="bk-round bk-bg-darken bk-border-off bk-icon bk-icon-default bk-bg-info">-->
+															<!--<i class="fa fa-building-o"></i>-->
+														<!--</div>-->
+													<!--</div>-->
+													<!--<h5 class="bk-fg-info bk-fg-darken bk-margin-off-bottom">Company Name</h5>-->
+													<!--<p>-->
+														<!--<small>AdminTemplate Inc.</small>-->
+													<!--</p>-->
+												<!--</a>-->
+											<!--</div>-->
+										</div>
+										<a class="left carousel-control bk-carousel-control bk-carousel-control-white bk-carousel-hide-init" href="#carousel-example-generic3" role="button" data-slide="prev">
+											<span class="fa fa-angle-left icon-prev bk-bg-very-light-gray"></span>
+										</a>
+										<a class="right carousel-control bk-carousel-control bk-carousel-control-white bk-carousel-hide-init" href="#carousel-example-generic3" role="button" data-slide="next">
+											<span class="fa fa-angle-right icon-next"></span>
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<hr class="bk-margin-off" />
+				<div class="bk-ltr bk-bg-white">
+					<div class="row">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+							<div class="bk-bg-white text-center bk-padding-top-20 bk-padding-bottom-10">
+								<div class="row">
+									<div class="text-left bk-padding-left-10">
+										<h4 class="bk-margin-off">Email</h4>
+									</div>
+								</div>
+							</div>
+							<!--<div class="bk-bg-white bk-bg-lighten bk-padding-top-10 bk-padding-left-20">-->
+								<!--<div class="pull-left bk-margin-right-10">-->
+									<!--<div class="bk-round bk-bg-darken bk-border-off">-->
+										<!--<i class="fa fa-map-marker fa-2x bk-fg-danger"></i>-->
+									<!--</div>-->
+								<!--</div>-->
+								<!--<p class="text-left">-->
+									<!--<small>Blackstreet No. 256, 1256 California, USA</small>-->
+								<!--</p>-->
+							<!--</div>-->
+						</div>
+					</div>
+				</div>
+				<div class="bk-ltr bk-padding-bottom-20 bk-padding-left-20">
+					<div class="row">
+						<!--<div class="col-12-4 col-md-12 col-sm-12 col-xs-12 bk-bg-white bk-padding-top-10">-->
+							<!--<i class="fa fa-phone"></i> +25 2569 256-->
+						<!--</div>-->
+						<!--<div class="col-12-4 col-md-12 col-sm-12 col-xs-12 bk-bg-white bk-padding-top-10">-->
+							<!--<i class="fa fa-tablet"></i> +62 2569 2568 256-->
+						<!--</div>-->
+						<div class="col-12-4 col-md-12 col-sm-12 col-xs-12 bk-bg-white bk-padding-top-10">
+							<i class="fa fa-envelope"></i> {{ request.user.email}}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-lg-5 col-md-5 col-sm-5">
+		<div class="panel">
+			<div class="panel-body">
+				<div class="tabs tabs-warning " >
+					<ul class="nav nav-tabs nav-justified">
+						<li class="active">
+							<a href="#overview" data-toggle="tab">Switch Roles</a>
+						</li>
+						<li>
+							<a href="#edit" data-toggle="tab">Update Profile</a>
+						</li>
+                        <li>
+							<a href="#changepwd" data-toggle="tab">Change PWD</a>
+						</li>
+					</ul>
+					<div class="tab-content">
+						<div id="overview" class="tab-pane active">
+							<div class="bk-bg-white bk-padding-top-10 bk-padding-bottom-10">
+								<h4>Available Roles</h4>
+								<!--<div class="bk-bg-white">-->
+									<!--<form role="form" action="javascript:">-->
+										<!--<input type="email" class="form-control" placeholder="What's on your mind?" />-->
+									<!--</form>-->
+								<!--</div>-->
+								<!--<div class="bk-bg-white bk-margin-15">-->
+									<!--<div class="btn-group">-->
+										<!--<button type="button" class="btn btn-link"><i class="fa fa-map-marker"></i></button>-->
+										<!--<button type="button" class="btn btn-link"><i class="fa fa-camera"></i></button>-->
+										<!--<button type="button" class="btn btn-link"><i class="fa fa-video-camera"></i></button>-->
+									<!--</div>-->
+									<!--<div class="pull-right">-->
+										<!--<button type="button" class="btn btn-primary"><i class="fa fa-lightbulb-o"></i> Post</button>-->
+									<!--</div>
+								</div>-->
+                                {% for i in roles %}
+                                    <!--<button type="button" class="btn btn-primary btn-lg btn-block"> <a href="/account/switchrole/{{i.role}}">{{i.role}}</a></button>-->
+                                    <ul>
+                                        {% if request.session.current_role == i.role%}
+                                            <i class="fa fa-dot-circle-o"></i>
+                                        {% else %}
+                                            <i class="fa fa-circle-o"></i>
+                                        {% endif%}
+                                        <a href="/account/switchrole/{{i.role}}">{{i.role}}</a>
+                                    </ul>
+                                {% endfor %}
+							</div>
+						</div>
+                        <div id="changepwd" class="tab-pane">
+							<form id="form" class="form-horizontal" action="/account/changePWD" method="POST">
+                                {% csrf_token %}
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h6><i class="fa  fa-check-circle-o bk-fg-warning"></i>Change PWD</h6>
+										<div class="panel-actions">
+											<a href="#" class="btn-minimize"><i class="fa fa-caret-up"></i></a>
+										</div>
+									</div>
+									<div class="panel-body">
+										<div class="form-group">
+											<label class="col-sm-5 control-label">Old Password <span class="required">*</span></label>
+											<div class="col-sm-7">
+												<input type="password" name="old_password" class="form-control" required/>
+											</div>
+										</div>
+                                        <div class="form-group">
+											<label class="col-sm-5 control-label">New Password <span class="required">*</span></label>
+											<div class="col-sm-7">
+												<input type="password" name="new_password" class="form-control" required/>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-5 control-label">Confirm New Password <span class="required">*</span></label>
+											<div class="col-sm-7">
+												<input type="password" name="new_password_r" class="form-control" required/>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-8 col-sm-offset-3">
+												<button class="bk-margin-5 btn btn-info">Submit</button>
+												<button type="reset" class="bk-margin-5 btn btn-default">Reset</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+						<div id="edit" class="tab-pane updateProfile">
+							<form id="form" class="form-horizontal" action="/account/update" method="post">
+                                {% csrf_token %}
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h6><i class="fa  fa-check-circle-o bk-fg-warning"></i>My Profile</h6>
+										<div class="panel-actions">
+											<a href="#" class="btn-minimize"><i class="fa fa-caret-up"></i></a>
+										</div>
+									</div>
+									<div class="panel-body">
+										<div class="form-group">
+											<label class="col-sm-5 control-label">First Name <span class="required">*</span></label>
+											<div class="col-sm-7">
+												<input type="text" name="firstname" class="form-control" placeholder="{{ request.user.first_name }}" required/>
+											</div>
+										</div>
+                                        <div class="form-group">
+											<label class="col-sm-5 control-label">Last Name <span class="required">*</span></label>
+											<div class="col-sm-7">
+												<input type="text" name="lastname" class="form-control" placeholder="{{ request.user.last_name }}" required/>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-5 control-label">Email <span class="required">*</span></label>
+											<div class="col-sm-7">
+												<input type="email" name="email" class="form-control" placeholder="{{ request.user.email }}" required/>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-8 col-sm-offset-3">
+												<button class="bk-margin-5 btn btn-info">Submit</button>
+												<button type="reset" class="bk-margin-5 btn btn-default">Reset</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--<div class="col-lg-3 col-md-12">-->
+		<!--<h4>Weekly Stats</h4>-->
+		<!--<div class="panel bk-widget bk-border-off">-->
+			<!--<div class="panel-body bk-bg-very-light-gray">-->
+				<!--<div class="row bk-fg-gray">-->
+					<!--<div class="col-lg-5 col-md-6 col-sm-6 col-xs-6">-->
+						<!--<h3 class="bk-margin-off bk-docs-font-weight-300 bk-fg-primary">$ 25,232</h3>-->
+						<!--EARNINGS-->
+					<!--</div>-->
+					<!--<div class="col-lg-7 col-md-6 col-sm-6 col-xs-6">-->
+						<!--<div class="small-chart-wrapper bk-padding-right-40">-->
+							<!--<div class="small-chart" id="sparklineLineEarnings"></div>-->
+							<!--<script type="text/javascript">-->
+								<!--var sparklineLineEarningsData = [15, 16, 17, 19, 15, 25, 23, 35, 29, 15, 30, 45];-->
+							<!--</script>-->
+						<!--</div>-->
+					<!--</div>-->
+				<!--</div>-->
+			<!--</div>-->
+		<!--</div>-->
+		<!--<div class="panel bk-widget bk-border-off">-->
+			<!--<div class="panel-body bk-bg-very-light-gray">-->
+				<!--<div class="row bk-fg-gray">-->
+					<!--<div class="col-lg-5 col-md-6 col-sm-6 col-xs-6">-->
+						<!--<h3 class="bk-margin-off bk-docs-font-weight-300 bk-fg-primary">598</h3>-->
+						<!--SALE ITEMS-->
+					<!--</div>-->
+					<!--<div class="col-lg-7 col-md-6 col-sm-6 col-xs-6">-->
+						<!--<div class="small-chart-wrapper bk-padding-right-40">-->
+							<!--<div class="small-chart" id="sparklineLineSale"></div>-->
+							<!--<script type="text/javascript">-->
+								<!--var sparklineLineSaleData = [20, 30, 15, 40, 30, 45, 60, 40, 50, 32, 65, 70];-->
+							<!--</script>-->
+						<!--</div>-->
+					<!--</div>-->
+				<!--</div>-->
+			<!--</div>-->
+		<!--</div>-->
+		<!--<div class="panel bk-widget bk-border-off">-->
+			<!--<div class="panel-body bk-bg-very-light-gray">-->
+				<!--<div class="row bk-fg-gray">-->
+					<!--<div class="col-lg-5 col-md-6 col-sm-6 col-xs-6">-->
+						<!--<h3 class="bk-margin-off bk-docs-font-weight-300 bk-fg-primary">1,958</h3>-->
+						<!--DOWNLOAD-->
+					<!--</div>-->
+					<!--<div class="col-lg-7 col-md-6 col-sm-6 col-xs-6">-->
+						<!--<div class="small-chart-wrapper bk-padding-right-40">-->
+							<!--<div class="small-chart" id="sparklineLineDownload"></div>-->
+							<!--<script type="text/javascript">-->
+								<!--var sparklineLineDownloadData = [19, 5, 25, 40, 35, 90, 60, 70, 30, 15, 80, 90];-->
+							<!--</script>-->
+						<!--</div>-->
+					<!--</div>-->
+				<!--</div>-->
+			<!--</div>-->
+		<!--</div>-->
+		<!--<div class="panel panel-default">-->
+			<!--<div class="panel-heading bk-bg-white">-->
+				<!--<h6><span class="label label-danger bk-margin-5">165</span>Friends</h6>-->
+				<!--<div class="panel-actions">-->
+					<!--<a href="#" class="btn-minimize"><i class="fa fa-caret-up"></i></a>-->
+					<!--<a href="#" class="btn-close"><i class="fa fa-times"></i></a>-->
+				<!--</div>-->
+			<!--</div>-->
+			<!--<div class="panel-body bk-noradius">-->
+				<!--<a class="bk-bg-white bk-padding-off-top bk-padding-off-bottom">-->
+					<!--<div class="row">-->
+						<!--<div class="col-xs-3 bk-vcenter text-center bk-padding-10">-->
+							<!--<div class="bk-avatar">-->
+								<!--<img src="../assets/img/avatar1.jpg" alt="" class="img-circle bk-img-40 bk-border-primary bk-border-2x bk-border-darken">-->
+							<!--</div>-->
+						<!--</div>-->
+						<!--<div class="col-xs-9 bk-vcenter">-->
+							<!--<h5 class="bk-fg-primary bk-fg-darken bk-margin-off-bottom">John Doe</h5>-->
+							<!--<p>-->
+								<!--Nullam vitae arcu in leo molestie hendrerit at quis sem.-->
+							<!--</p>-->
+						<!--</div>-->
+					<!--</div>-->
+				<!--</a>-->
+				<!--<hr class="bk-margin-off">-->
+				<!--<a class="bk-bg-white bk-padding-off-top bk-padding-off-bottom">-->
+					<!--<div class="row">-->
+						<!--<div class="col-xs-3 bk-vcenter text-center bk-padding-10">-->
+							<!--<div class="bk-avatar">-->
+								<!--<img src="../assets/img/avatar2.jpg" alt="" class="img-circle bk-img-40 bk-border-warning bk-border-2x bk-border-darken">-->
+							<!--</div>-->
+						<!--</div>-->
+						<!--<div class="col-xs-9 bk-vcenter">-->
+							<!--<h5 class="bk-fg-warning bk-fg-darken bk-margin-off-bottom">John Doe</h5>-->
+							<!--<p>-->
+								<!--Nunc vitae porttitor purus.-->
+							<!--</p>-->
+						<!--</div>-->
+					<!--</div>-->
+				<!--</a>-->
+				<!--<hr class="bk-margin-off">-->
+				<!--<a class="bk-bg-white bk-padding-off-top bk-padding-off-bottom">-->
+					<!--<div class="row">-->
+						<!--<div class="col-xs-3 bk-vcenter text-center bk-padding-10">-->
+							<!--<div class="bk-avatar">-->
+								<!--<img src="../assets/img/avatar2.jpg" alt="" class="img-circle bk-img-40 bk-border-danger bk-border-2x bk-border-darken">-->
+							<!--</div>-->
+						<!--</div>-->
+						<!--<div class="col-xs-9 bk-vcenter">-->
+							<!--<h5 class="bk-fg-danger bk-fg-darken bk-margin-off-bottom">John Doe</h5>-->
+							<!--<p>-->
+								<!--Morbi interdum posuere ultricies. Aliquam sit amet neque nisi.-->
+							<!--</p>-->
+						<!--</div>-->
+					<!--</div>-->
+				<!--</a>-->
+				<!--<hr class="bk-margin-off">-->
+			<!--</div>-->
+			<!--<div class="panel-footer bk-bg-white">-->
+				<!--<div class="bk-padding-top-5 bk-padding-bottom-5 ">-->
+					<!--<div class="row">-->
+						<!--<div class="col-xs-6">-->
+							<!--<a href="#" class="bk-fg-textcolor"><small><i class="fa fa-angle-left"></i> PREVIOUS</small></a>-->
+						<!--</div>-->
+						<!--<div class="col-xs-6 text-right">-->
+							<!--<a href="#" class="bk-fg-textcolor"><small>NEXT <i class="fa fa-angle-right"></i></small></a>-->
+						<!--</div>-->
+					<!--</div>-->
+				<!--</div>-->
+			<!--</div>-->
+		<!--</div>-->
+		<!--<h4>Last Projects</h4>-->
+		<!--<ul class="bulletList">-->
+			<!--<li class="red">-->
+				<!--<span class="title">Fire Admin Template</span>-->
+				<!--<span class="description truncate">Lorem ipsom dolor sit.</span>-->
+			<!--</li>-->
+			<!--<li class="green">-->
+				<!--<span class="title">HTML5 Template</span>-->
+				<!--<span class="description truncate">Lorem ipsom dolor sit amet</span>-->
+			<!--</li>-->
+			<!--<li class="blue">-->
+				<!--<span class="title">HTML5 Template</span>-->
+				<!--<span class="description truncate">Lorem ipsom dolor sit.</span>-->
+			<!--</li>-->
+			<!--<li class="orange">-->
+				<!--<span class="title">Template</span>-->
+				<!--<span class="description truncate">Lorem ipsom dolor sit.</span>-->
+			<!--</li>-->
+		<!--</ul>-->
+	<!--</div>-->
+</div>
+{% endblock%}
+
+{% block notification %}
+    <div id="msg_level" hidden="hidden" >{{ msg_level }} </div>
+    <div id="msg_content" hidden="hidden">{{ msg_content }} </div>
+    <!--<script>-->
+        <!--console.log('{{ msg_level }}')-->
+    <!--</script>-->
+{% endblock%}
+<!-- Main Page-->
+
+<!-- Page JS -->
+{% block page_js %}
+<script src="../assets/js/pages/profile.js"></script>
+{% endblock %}
+<!-- Page JS -->

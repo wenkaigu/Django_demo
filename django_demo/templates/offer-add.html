@@ -1,0 +1,153 @@
+{% extends 'basesite.html' %}
+
+<!-- Header -->
+{% block title %} Offer | Home {% endblock %}
+<!-- Header End-->
+
+<!-- Main Page-->
+{% block breadcrumb %}
+<ol class="breadcrumb visible-sm visible-md visible-lg">
+	<li><a href="/"><i class="icon fa fa-home"></i>Home</a></li>
+    <li><a href="/offer"><i class="icon fa fa-file-text-o"></i>Offer</a></li>
+	<li class="active"><i class="fa fa-edit"></i>Create New Offer</li>
+</ol>
+{% endblock%}
+
+{% block pull-right %}
+<h2>Create New Offer</h2>
+{% endblock%}
+
+{% block main_content %}
+<form id="form" class="form-horizontal" action="/offer/add" method="post">
+    {% csrf_token %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h6><i class="fa  fa-check-circle-o bk-fg-warning"></i>New Offer</h6>
+            <div class="panel-actions">
+                <a href="#" class="btn-minimize"><i class="fa fa-caret-up"></i></a>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Candidate Name <span class="required">*</span></label>
+                <div class="col-sm-9">
+                    <input type="text" name="name" class="form-control" placeholder="Please enter candidate's name" required/>
+                </div>
+                <label class="col-sm-3 control-label">Email <span class="required">*</span></label>
+                <div class="col-sm-9">
+                    <input type="email" name="email" class="form-control" placeholder="Please enter candidate's Email" required/>
+                </div>
+                <label class="col-sm-3 control-label">Mobile <span class="required">*</span></label>
+                <div class="col-sm-9">
+                    <input name="mobile" data-plugin-masked-input data-input-mask="999 9999 9999" placeholder="999 9999 9999" class="form-control" required/>
+                </div>
+            </div>
+            <hr />
+            <div class="form-group">
+                <label class="col-md-3 control-label">Grade <span class="required">*</span></label>
+                <div class="col-md-9">
+                    <select name="grade" class="form-control select2" size="1" required>
+                        <option></option>
+                        <optgroup label="ITO">
+                            <option value="Y">Y</option>
+                            <option value="C1Y">C1Y</option>
+                            <option value="C1">C1</option>
+                            <option value="C2">C2</option>
+                            <option value="C3A">C3A</option>
+                            <option value="C3B">C3B</option>
+                            <option value="C4">C4</option>
+                            <option value="C5">C5</option>
+                        </optgroup>
+                        <optgroup label="BPO">
+                            <option value="BPO1">BPO1</option>
+                            <option value="BPO2">BPO2</option>
+                            <option value="BPO3">BPO3</option>
+                            <option value="BPO4">BPO4</option>
+                            <option value="BPO5">BPO5</option>
+                            <option value="BPO6">BPO6</option>
+                            <option value="BPO7">BPO7</option>
+                            <option value="BPO8">BPO8</option>
+                        </optgroup>
+                    </select>
+                </div>
+            </div>
+            <hr />
+            <div class="form-group">
+                <label class="col-md-3 control-label">Location <span class="required">*</span></label>
+                <div class="col-md-9">
+                    <select name="location" class="form-control select2" size="1" required>
+                        <option></option>
+                        <option value="SH">Shanghai</option>
+                        <option value="BJ">Beijing</option>
+                        <option value="TJ">Tianjing</option>
+                        <option value="DL">Dalian</option>
+                        <option value="HZ">Hangzhou</option>
+                        <option value="SZ">Shenzhen</option>
+                    </select>
+                </div>
+                <label class="col-sm-3 control-label">Other Location</label>
+                <div class="col-sm-9">
+                    <input type="text" name="addiLoc" class="form-control" placeholder="Please enter additional location if any." />
+                </div>
+            </div>
+            <hr />
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Account <span class="required">*</span></label>
+                <div class="col-sm-9">
+                    <input type="text" name="account" class="form-control" placeholder="Please enter candidate's account." required/>
+                </div>
+            </div>
+            <hr />
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Probation <span class="required">*</span></label>
+                <div class="col-md-9">
+                    <select name="probation" class="form-control select2" size="1" required>
+                        <option></option>
+                        <option value="0">No Probation</option>
+                        <option value="3">3 Month Probation</option>
+                        <option value="6">6 Month Probation</option>
+                    </select>
+                </div>
+                <label class="col-sm-3 control-label">Base Salary <span class="required">*</span></label>
+                <div class="col-sm-9">
+                    <div class="controls">
+                        <div class="input-prepend input-group has-warning">
+                            <span class="input-group-addon ">¥</span>
+                            <input name="salary" class="form-control" size="16" type="number" required/><span class="input-group-addon">.00</span>
+                        </div>
+                    </div>
+                </div>
+                <label class="col-sm-3 control-label">Variable Salary <span class="required">*</span></label>
+                <div class="col-sm-9">
+                    <div class="controls">
+                        <div class="input-prepend input-group has-warning">
+                            <span class="input-group-addon ">¥</span>
+                            <input name="var_pay" class="form-control" size="16" type="number" required/><span class="input-group-addon">.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-sm-7 col-sm-offset-5">
+                    <button class="bk-margin-5 btn btn-info">Save</button>
+                    <button type="reset" class="bk-margin-5 btn btn-default">Reset</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock%}
+
+{% block notification %}
+    <div id="msg_level" hidden="hidden" >{{ msg_level }} </div>
+    <div id="msg_content" hidden="hidden">{{ msg_content }} </div>
+{% endblock%}
+<!-- Main Page-->
+
+<!-- Page JS -->
+{% block page_js %}
+<script src="../assets/js/pages/offer-add.js"></script>
+{% endblock %}
+<!-- Page JS -->
