@@ -1,16 +1,18 @@
 import os
-from datetime import date
-
 import pythoncom
 import win32com
-from account.models import Role
+
+from datetime import date, time
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.shortcuts import render, redirect
 from win32com.client import Dispatch
+from django.http import StreamingHttpResponse
+
 
 from .models import Candidate
+from account.models import Role
 
 
 # Create your views here.
@@ -177,18 +179,87 @@ def offer_sign(request, offer_id):
         else:
             template_name = 'Offer letter-'+candidate.location+'-6 months probation.docx'
 
-        # offer_name = 'TCS'
+        # offer_name_doc = 'TCSC EP2016 ' + candidate.offer_number + ' ' + candidate.name + ' ' + candidate.location + '.docx'
+        offer_name_pdf = 'TCSC EP2016 ' + candidate.offer_number + ' ' + candidate.name + ' ' + candidate.location + '.pdf'
 
-        pythoncom.CoInitialize()
-        w = win32com.client.DispatchEx('Word.Application')
-        w.Visible = 0
-        w.DisplayAlerts = 0
+        candidate.offer_date = date.today()
 
-        doc = w.Documents.Open(FileName=template_path+template_name)
-        doc.SaveAs(r'Offer letter-BJ-3 months probation.pdf', FileFormat=17)
-        doc.Close()
-        w.Quit()
-        pythoncom.CoUninitialize()
+        offer_year = candidate.offer_date.year
+        if candidate.offer_date.month == 1:
+            offer_month = 'Jan'
+        elif candidate.offer_date.month == 2:
+            offer_month = 'Feb'
+        elif candidate.offer_date.month == 3:
+            offer_month = 'Mar'
+        elif candidate.offer_date.month == 4:
+            offer_month = 'Apr'
+        elif candidate.offer_date.month == 5:
+            offer_month = 'May'
+        elif candidate.offer_date.month == 6:
+            offer_month = 'Jun'
+        elif candidate.offer_date.month == 7:
+            offer_month = 'Jul'
+        elif candidate.offer_date.month == 8:
+            offer_month = 'Aug'
+        elif candidate.offer_date.month == 9:
+            offer_month = 'Sep'
+        elif candidate.offer_date.month == 10:
+            offer_month = 'Oct'
+        elif candidate.offer_date.month == 11:
+            offer_month = 'Nov'
+        elif candidate.offer_date.month == 12:
+            offer_month = 'Dec'
+
+        offer_day = candidate.offer_date.day
+        offer_date = str(offer_year) +'-'+ str(offer_month)+'-'+str(offer_day)
+
+
+        try:
+            pythoncom.CoInitialize()
+            w = win32com.client.DispatchEx('Word.Application')
+            w.Visible = 0
+            w.DisplayAlerts = 0
+
+            doc = w.Documents.Open(FileName=template_path+template_name)
+
+            w.Selection.Find.Execute('[Candidate_Name]', False, False, False, False, False, True, 1, True, candidate.name, 2)
+            w.Selection.Find.Execute('[Candidate_Grade]', False, False, False, False, False, True, 1, True, candidate.grade, 2)
+            w.Selection.Find.Execute('[Candidate_Ref_No]', False, False, False, False, False, True, 1, True, candidate.offer_number, 2)
+            w.Selection.Find.Execute('[Candidate_Date]', False, False, False, False, False, True, 1, True, offer_date, 2)
+            if candidate.location == 'SH':
+                location = 'Shanghai'
+            elif candidate.location == 'BJ':
+                location = 'Beijing'
+            elif candidate.location == 'TJ':
+                location = 'Tianjing'
+            elif candidate.location == 'DL':
+                location = 'Dalian'
+            elif candidate.location == 'HZ':
+                location = 'Hangzhou'
+            elif candidate.location == 'SZ':
+                location = 'Shenzhen'
+
+            w.Selection.Find.Execute('[Work_Location]', False, False, False, False, False, True, 1, True, location, 2)
+            if candidate.additional_location:
+                w.Selection.Find.Execute('[Other_Location]', False, False, False, False, False, True, 1, True, 'and '+candidate.additional_location, 2)
+            else:
+                w.Selection.Find.Execute('[Other_Location]', False, False, False, False, False, True, 1, True, '', 2)
+
+            w.Selection.Find.Execute('[Probation_Pay]', False, False, False, False, False, True, 1, True, str(candidate.salary*0.95)+'0', 2)
+            w.Selection.Find.Execute('[Base_Pay]', False, False, False, False, False, True, 1, True, str(candidate.salary)+'.00', 2)
+            w.Selection.Find.Execute('[Valid_Date]', False, False, False, False, False, True, 1, True, offer_date, 2)
+            w.Selection.Find.Execute('[Variable_Pay]', False, False, False, False, False, True, 1, True, str(candidate.var_pay)+'0', 2)
+            w.Selection.Find.Execute('[13_Salary]', False, False, False, False, False, True, 1, True, str(candidate.salary)+'.00', 2)
+
+            doc.SaveAs(offer_path+offer_name_pdf, FileFormat=17)
+
+            candidate.offer_signed = True
+            candidate.save()
+
+        finally:
+            doc.Close(0)
+            w.Quit()
+            pythoncom.CoUninitialize()
 
         messages.success(request, r"Offer for "+candidate.name+" is signed.")
     else:
@@ -196,3 +267,34 @@ def offer_sign(request, offer_id):
 
     return redirect(reverse('offer_index'))
 
+
+@login_required(login_url='/account/login')
+def offer_download(request, offer_id):
+
+    candidate = Candidate.objects.get(id=offer_id)
+    if candidate and candidate.offer_signed:
+
+        basepath = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        offer_path = os.path.join(basepath, 'offer_files/')
+
+        offer_name_pdf = 'TCSC EP2016 ' + candidate.offer_number + ' ' + candidate.name + ' ' + candidate.location + '.pdf'
+
+        def file_iterator(fn, buf_size=512):
+            with open(fn,'rb') as f:
+                while True:
+                    c = f.read(buf_size)
+                    if c:
+                        yield c
+                    else:
+                        break
+
+        response = StreamingHttpResponse(file_iterator(offer_path+offer_name_pdf))
+        response['Content-Type'] = 'application/octet-stream'
+        response['Content-Disposition'] = 'attachment;filename="'+offer_name_pdf+'"'
+        messages.success(request, r"Offer for "+candidate.name+" is signed.")
+        return response
+
+    else:
+        messages.error(request, r"Offer is not signed")
+
+    return redirect(reverse('offer_index'))

@@ -82,6 +82,16 @@
                                                 <i class="fa fa-edit "></i>
                                             </a>
                                         {% endif %}
+                                        {% if candidate.offer_signed and request.session.current_role == 'Recruiter'%}
+                                            <a class="btn btn-success" href="/offer/download/{{candidate.id}}">
+                                                <i class="fa fa-floppy-o"></i>
+                                            </a>
+                                        {% endif %}
+                                        {% if candidate.offer_signed and request.session.current_role == 'Authorizer'%}
+                                            <a class="btn btn-success" href="/offer/download/{{candidate.id}}">
+                                                <i class="fa fa-floppy-o"></i>
+                                            </a>
+                                        {% endif %}
                                     </td>
                                 </tr>
                             {% endfor %}

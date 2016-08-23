@@ -28,7 +28,18 @@
             </div>
         </div>
         <div class="panel-body">
-            <div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Offer Number <span class="required">*</span></label>
+                <div class="col-sm-9">
+                    {% if candidate.offer_generated or request.session.current_role != 'Recruiter' %}
+                        <p class="form-control-static">{{candidate.offer_number}}</p>
+                    {% else %}
+                        <input type="text" name="name" class="form-control" value="{{candidate.offer_number}}" required/>
+                    {% endif %}
+                </div>
+            </div>
+            <hr />
+            <div class="form-group">
                 <label class="col-sm-3 control-label">Status</label>
                 <div class="col-sm-9">
                     {% if candidate.offer_generated and candidate.offer_signed %}
@@ -133,9 +144,9 @@
                 <label class="col-sm-3 control-label">Other Location</label>
                 <div class="col-sm-9">
                     {% if candidate.offer_generated or request.session.current_role != 'Recruiter' %}
-                        <p class="form-control-static">{{candidate.other_location}}</p>
+                        <p class="form-control-static">{{candidate.additional_location}}</p>
                     {% else %}
-                        <input type="text" name="addiLoc" class="form-control" value="{{candidate.other_location}}" />
+                        <input type="text" name="addiLoc" class="form-control" value="{{candidate.additional_location}}" />
                     {% endif %}
                 </div>
             </div>

@@ -74,6 +74,8 @@ class Candidate(models.Model):
 
     account = models.CharField(max_length=200)
 
+    offer_number = models.CharField(max_length=20)
+
     recruiter = models.ForeignKey(User)
 
     offer_date = models.DateField(default=None, null=True, blank=True)
@@ -81,8 +83,6 @@ class Candidate(models.Model):
     offer_generated = models.BooleanField(default=False)
 
     offer_signed = models.BooleanField(default=False)
-
-    offer_path = models.FilePathField(default=None, null=True, blank=True)
 
     def __str__(self):
         return self.name

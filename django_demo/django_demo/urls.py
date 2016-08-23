@@ -34,7 +34,8 @@ offer_urlpatterns = [
     url('^(?P<offer_id>\d+)$', offer_view.offer_details, name="offer_details"),
     url('^add$', offer_view.offer_add, name="offer_add"),
     url('^generate/(?P<offer_id>\d+)$', offer_view.offer_generate, name="offer_generate"),
-    url('^sign/(?P<offer_id>\d+)$', offer_view.offer_sign, name="offer_sign")
+    url('^sign/(?P<offer_id>\d+)$', offer_view.offer_sign, name="offer_sign"),
+    url('^download/(?P<offer_id>\d+)$', offer_view.offer_download, name="offer_download")
 ]
 
 urlpatterns = [
