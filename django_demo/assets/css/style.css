@@ -6159,10 +6159,10 @@ border-radius: 4px;
 }
 .login-box .header img,
 .register-box .header img {
-padding-left: 95px;
+padding-left: 0px;
 }
 .recover-box .header img {
-padding-left: 95px;
+padding-left: 0px;
 }
 .login-box .text-center li,
 .register-box .text-center li {
