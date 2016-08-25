@@ -110,6 +110,7 @@ def offer_details(request, offer_id):
     if request.method == 'POST':
         candidate = Candidate.objects.get(id=offer_id)
         if (not candidate.offer_generated) and current_role == 'Recruiter':
+            offer_number = request.POST.get('offer_number')
             name = request.POST.get('name')
             email = request.POST.get('email')
             mobile = request.POST.get('mobile')
@@ -120,6 +121,7 @@ def offer_details(request, offer_id):
             probation = request.POST.get('probation')
             salary = request.POST.get('salary')
             var_pay = request.POST.get('var_pay')
+            candidate.offer_number = offer_number
             candidate.name = name
             candidate.email = email
             candidate.mobile = mobile
