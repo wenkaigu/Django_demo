@@ -34,7 +34,7 @@
                     {% if candidate.offer_generated or request.session.current_role != 'Recruiter' %}
                         <p class="form-control-static">{{candidate.offer_number}}</p>
                     {% else %}
-                        <input type="text" name="name" class="form-control" value="{{candidate.offer_number}}" required/>
+                        <input type="text" name="offer_number" class="form-control" value="{{candidate.offer_number}}" required/>
                     {% endif %}
                 </div>
             </div>

@@ -247,11 +247,11 @@ def offer_sign(request, offer_id):
             else:
                 w.Selection.Find.Execute('[Other_Location]', False, False, False, False, False, True, 1, True, '', 2)
 
-            w.Selection.Find.Execute('[Probation_Pay]', False, False, False, False, False, True, 1, True, str(candidate.salary*0.95)+'0', 2)
-            w.Selection.Find.Execute('[Base_Pay]', False, False, False, False, False, True, 1, True, str(candidate.salary)+'.00', 2)
+            w.Selection.Find.Execute('[Probation_Pay]', False, False, False, False, False, True, 1, True, str(round(candidate.salary*0.95, 2)), 2)
+            w.Selection.Find.Execute('[Base_Pay]', False, False, False, False, False, True, 1, True, str(round(candidate.salary, 2)), 2)
             w.Selection.Find.Execute('[Valid_Date]', False, False, False, False, False, True, 1, True, offer_date, 2)
-            w.Selection.Find.Execute('[Variable_Pay]', False, False, False, False, False, True, 1, True, str(candidate.var_pay)+'0', 2)
-            w.Selection.Find.Execute('[13_Salary]', False, False, False, False, False, True, 1, True, str(candidate.salary)+'.00', 2)
+            w.Selection.Find.Execute('[Variable_Pay]', False, False, False, False, False, True, 1, True, str(round(candidate.var_pay, 2)), 2)
+            w.Selection.Find.Execute('[13_Salary]', False, False, False, False, False, True, 1, True, str(round(candidate.salary, 2)), 2)
 
             doc.SaveAs(offer_path+offer_name_pdf, FileFormat=17)
 
